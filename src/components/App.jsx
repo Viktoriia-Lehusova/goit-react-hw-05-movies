@@ -1,9 +1,10 @@
-import { Routes, Route, NavLink } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Home from 'pages/Home';
 import Movies from 'pages/Movies';
 import MovieDetails from 'pages/MovieDetails';
 import { Layout } from './Layout';
+import Cast from './Cast';
+import Reviews from './Reviews';
 
 // import Home from 'path/to/pages/Home';
 // import About from 'path/to/pages/About';
@@ -16,8 +17,8 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="movies" element={<Movies />} />
         <Route path="movies/:movieId" element={<MovieDetails />}>
-          <Route path="cast" element={<div>cast</div>} />
-          <Route path="reviews" element={<div>reviews</div>} />
+          <Route path="cast" element={<Cast />} />
+          <Route path="reviews" element={<Reviews />} />
         </Route>
       </Route>
     </Routes>

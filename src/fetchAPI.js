@@ -34,3 +34,23 @@ export const fetchMovieDetails = async movieId => {
     console.log(error);
   }
 };
+export const fetchMovieCast = async movieId => {
+  try {
+    const { data } = await axios.get(
+      `${BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}&language=en-US`
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const fetchMovieReviews = async movieId => {
+  try {
+    const { data } = await axios.get(
+      `${BASE_URL}/movie/${movieId}/reviews?api_key=${API_KEY}&language=en-US&page=1`
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

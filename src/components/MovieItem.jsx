@@ -21,10 +21,10 @@ const MovieItem = ({ movie, genres }) => {
       <h2>Additional information</h2>
       <ul>
         <li>
-          <Link>Cast</Link>
+          <Link to="cast">Cast</Link>
         </li>
         <li>
-          <Link>Reviews</Link>
+          <Link to="reviews">Reviews</Link>
         </li>
       </ul>
       <Outlet />
