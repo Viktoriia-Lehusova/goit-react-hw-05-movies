@@ -1,18 +1,28 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMovieReviews } from 'fetchAPI';
+import { fetchMovieReviews } from '../fetchAPI';
+import { Loader } from '../components/Loader';
 
 const Reviews = () => {
   const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const movieReviews = async () => {
+      setLoading(true);
       try {
         const { results } = await fetchMovieReviews(movieId);
+        if (results.length === 0) {
+          setIsEmpty(true);
+        }
         setReviews(results);
       } catch (error) {
-        console.log(error.message);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
     movieReviews();
@@ -20,6 +30,7 @@ const Reviews = () => {
 
   return (
     <div>
+      {loading && <div> {Loader()} </div>}
       <ul>
         {reviews.map(({ id, author, content }) => (
           <li key={id}>
@@ -28,6 +39,8 @@ const Reviews = () => {
           </li>
         ))}
       </ul>
+      {error && <h2>Something went wrong. Try again.</h2>}
+      {isEmpty && <h1> There are no reviews.</h1>}
     </div>
   );
 };

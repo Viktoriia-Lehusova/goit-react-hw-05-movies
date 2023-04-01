@@ -1,23 +1,33 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { fetchMovieByQuery } from 'fetchAPI';
-import MovieList from 'components/MovieList';
+import { fetchMovieByQuery } from '../fetchAPI';
+import MovieList from '../components/MovieList';
+import { Loader } from '../components/Loader';
+import Notiflix from 'notiflix';
 
 const Movies = () => {
   const [movieValue, setMovieValue] = useState('');
   const [moviesByQuery, setMoviesByQuery] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get('query');
+  const [loading, setLoading] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (searchParams.get('searchQuery') === null) return;
     const searchValue = searchParams.get('searchQuery');
     async function MovieByValue() {
+      setLoading(true);
       try {
         const { results } = await fetchMovieByQuery(searchValue);
+        if (results.length === 0) {
+          setIsEmpty(true);
+        }
         setMoviesByQuery(results);
       } catch (error) {
-        console.log(error.message);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     }
     MovieByValue();
@@ -27,17 +37,16 @@ const Movies = () => {
     evt.preventDefault();
 
     setSearchParams({ searchQuery: movieValue });
-    //    if (imageValue.trim() === '') {
-    //      toast.error('Something went wrong.');
-    //      return;
-    //    }
+    if (movieValue.trim() === '') {
+      Notiflix.Notify.failure('Something went wrong.');
+      return;
+    }
 
     setMovieValue('');
   };
 
   const handleSearchValueChange = evt => {
     setMovieValue(evt.target.value);
-    // setMovieValue(evt.currentTarget.value.toLowerCase());
   };
 
   return (
@@ -54,7 +63,11 @@ const Movies = () => {
         />
         <button type="submit"></button>
       </form>
+
+      {loading && <div> {Loader()} </div>}
       <MovieList movies={moviesByQuery} />
+      {error && <h2>Something went wrong. Try again.</h2>}
+      {isEmpty && <h1> Sorry. There are no movies by your query</h1>}
     </div>
   );
 };
