@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { fetchMovieByQuery } from 'fetchAPI';
-import { MovieList } from 'components/MovieList';
+import MovieList from 'components/MovieList';
 
 const Movies = () => {
   const [movieValue, setMovieValue] = useState('');
-  const [movieByQuery, setMovieByQuery] = useState(null);
+  const [moviesByQuery, setMoviesByQuery] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query');
 
   useEffect(() => {
     if (searchParams.get('searchQuery') === null) return;
@@ -14,7 +15,7 @@ const Movies = () => {
     async function MovieByValue() {
       try {
         const { results } = await fetchMovieByQuery(searchValue);
-        setMovieByQuery(results);
+        setMoviesByQuery(results);
       } catch (error) {
         console.log(error.message);
       }
@@ -25,17 +26,18 @@ const Movies = () => {
   const handleSubmit = evt => {
     evt.preventDefault();
 
+    setSearchParams({ searchQuery: movieValue });
     //    if (imageValue.trim() === '') {
     //      toast.error('Something went wrong.');
     //      return;
     //    }
-    setSearchParams({ searchQuery: movieValue });
 
     setMovieValue('');
   };
 
   const handleSearchValueChange = evt => {
-    setMovieValue(evt.currentTarget.value.toLowerCase());
+    setMovieValue(evt.target.value);
+    // setMovieValue(evt.currentTarget.value.toLowerCase());
   };
 
   return (
@@ -52,7 +54,7 @@ const Movies = () => {
         />
         <button type="submit"></button>
       </form>
-      {/* <MovieList movies={movieByQuery} /> */}
+      <MovieList movies={moviesByQuery} />
     </div>
   );
 };
