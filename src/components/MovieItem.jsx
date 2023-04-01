@@ -1,4 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
+import { Suspense } from 'react';
+import { Loader } from '../components/Loader';
 
 const MovieItem = ({ movie, genres }) => {
   const img_url = 'https://image.tmdb.org/t/p/w500';
@@ -27,7 +29,9 @@ const MovieItem = ({ movie, genres }) => {
           <Link to="reviews">Reviews</Link>
         </li>
       </ul>
-      <Outlet />
+      <Suspense fallback={<div>{Loader()}</div>}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 };

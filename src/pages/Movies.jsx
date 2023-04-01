@@ -16,12 +16,14 @@ const Movies = () => {
   useEffect(() => {
     if (searchParams.get('searchQuery') === null) return;
     const searchValue = searchParams.get('searchQuery');
+    setLoading(true);
     async function MovieByValue() {
-      setLoading(true);
       try {
         const { results } = await fetchMovieByQuery(searchValue);
         if (results.length === 0) {
           setIsEmpty(true);
+        } else {
+          setIsEmpty(false);
         }
         setMoviesByQuery(results);
       } catch (error) {
@@ -36,13 +38,19 @@ const Movies = () => {
   const handleSubmit = evt => {
     evt.preventDefault();
 
+    if (movieValue === '') {
+      return setSearchParams({});
+    }
+
     setSearchParams({ searchQuery: movieValue });
+
     if (movieValue.trim() === '') {
       Notiflix.Notify.failure('Something went wrong.');
       return;
     }
 
     setMovieValue('');
+    setMoviesByQuery([]);
   };
 
   const handleSearchValueChange = evt => {
@@ -64,8 +72,9 @@ const Movies = () => {
         <button type="submit"></button>
       </form>
 
+      {moviesByQuery && <MovieList movies={moviesByQuery} />}
       {loading && <div> {Loader()} </div>}
-      <MovieList movies={moviesByQuery} />
+
       {error && <h2>Something went wrong. Try again.</h2>}
       {isEmpty && <h1> Sorry. There are no movies by your query</h1>}
     </div>
