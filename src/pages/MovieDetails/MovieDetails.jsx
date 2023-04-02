@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { GoArrowLeft } from 'react-icons/go';
 import { fetchMovieDetails } from '../../fetchAPI';
 import MovieItem from '../../components/MovieItem/MovieItem';
 import { Loader } from '../../components/Loader/Loader';
 import { useRef } from 'react';
+import { StyledTitle } from '../Movies/Movies.styled';
+import { StyledLink } from './MovieDetails.styled';
+import { Box } from '../Home/Home.styled';
 
 const MovieDetails = () => {
   const location = useLocation();
@@ -34,11 +38,16 @@ const MovieDetails = () => {
 
   return (
     <div>
-      {loading && <div> {Loader()} </div>}
-      <Link to={backLocation.current}>Go back</Link>
+      {loading && <Box> {Loader()} </Box>}
+      <StyledLink to={backLocation.current}>
+        <GoArrowLeft />
+        Go back
+      </StyledLink>
       <MovieItem movie={movie} genres={movie.genres} />;
-      {error && <h2>Something went wrong. Try again.</h2>}
-      {isEmpty && <h1> Sorry. There are no movies by your query</h1>}
+      {error && <StyledTitle>Something went wrong. Try again.</StyledTitle>}
+      {isEmpty && (
+        <StyledTitle> Sorry. There are no movies by your query</StyledTitle>
+      )}
     </div>
   );
 };

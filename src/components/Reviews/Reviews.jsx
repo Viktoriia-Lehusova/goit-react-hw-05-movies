@@ -2,6 +2,13 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMovieReviews } from '../../fetchAPI';
 import { Loader } from '../Loader/Loader';
+import { Box } from '../../pages/Home/Home.styled';
+import {
+  StyledList,
+  StyledItem,
+  StyledSubtitle,
+  StyledTitle,
+} from './Reviews.styled';
 
 const Reviews = () => {
   const { movieId } = useParams();
@@ -30,17 +37,17 @@ const Reviews = () => {
 
   return (
     <div>
-      {loading && <div> {Loader()} </div>}
-      <ul>
+      {loading && <Box> {Loader()} </Box>}
+      <StyledList>
         {reviews.map(({ id, author, content }) => (
-          <li key={id}>
+          <StyledItem key={id}>
             {author}
-            <p>{content}</p>
-          </li>
+            <StyledSubtitle>{content}</StyledSubtitle>
+          </StyledItem>
         ))}
-      </ul>
-      {error && <h2>Something went wrong. Try again.</h2>}
-      {isEmpty && <h1> There are no reviews.</h1>}
+      </StyledList>
+      {error && <StyledTitle>Something went wrong. Try again.</StyledTitle>}
+      {isEmpty && <StyledTitle> There are no reviews.</StyledTitle>}
     </div>
   );
 };

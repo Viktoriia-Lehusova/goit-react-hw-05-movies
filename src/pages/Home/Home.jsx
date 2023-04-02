@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import MovieList from '../../components/MovieList/MovieList';
 import { fetchTrendMovies } from '../../fetchAPI';
 import { Loader } from '../../components/Loader/Loader';
+import { StyledTitle, Box } from './Home.styled';
 
 const Home = () => {
   const [trendMovies, setTrendMovies] = useState([]);
@@ -29,8 +30,8 @@ const Home = () => {
 
   return (
     <div>
-      <h2>Trending today</h2>
-      {loading && <div> {Loader()} </div>}
+      <StyledTitle>Trending today</StyledTitle>
+      {loading && <Box> {Loader()} </Box>}
       <MovieList movies={trendMovies} />
       {error && <h2>Something went wrong. Try again.</h2>}
       {isEmpty && <h1> Sorry. There are no images ... </h1>}

@@ -2,6 +2,14 @@ import { fetchMovieCast } from '../../fetchAPI';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../Loader/Loader';
+import { Box } from '../../pages/Home/Home.styled';
+import {
+  StyledList,
+  StyledItem,
+  StyledImg,
+  StyledTitle,
+  StyledSubtitle,
+} from './Cast.styled';
 
 const Cast = () => {
   const { movieId } = useParams();
@@ -32,16 +40,16 @@ const Cast = () => {
 
   return (
     <div>
-      {loading && <div> {Loader()} </div>}
-      <ul>
+      {loading && <Box> {Loader()} </Box>}
+      <StyledList>
         {cast.map(({ id, profile_path, name, character }) => (
-          <li key={id}>
-            <img src={img_url + profile_path} alt="" />
-            <h2>{name}</h2>
-            <p>{character}</p>
-          </li>
+          <StyledItem key={id}>
+            <StyledImg src={img_url + profile_path} alt="" />
+            <StyledTitle>{name}</StyledTitle>
+            <StyledSubtitle>{character}</StyledSubtitle>
+          </StyledItem>
         ))}
-      </ul>
+      </StyledList>
       {error && <h2>Something went wrong. Try again.</h2>}
       {isEmpty && <h1> Sorry, we dont have this information.</h1>}
     </div>

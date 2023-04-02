@@ -3,7 +3,15 @@ import { useSearchParams } from 'react-router-dom';
 import { fetchMovieByQuery } from '../../fetchAPI';
 import MovieList from '../../components/MovieList/MovieList';
 import { Loader } from '../../components/Loader/Loader';
+import { CgSearch } from 'react-icons/cg';
 import Notiflix from 'notiflix';
+import {
+  StyledTitle,
+  StyledInput,
+  StyledForm,
+  StyledBtn,
+} from './Movies.styled';
+import { Box } from '../Home/Home.styled';
 
 const Movies = () => {
   const [movieValue, setMovieValue] = useState('');
@@ -22,8 +30,6 @@ const Movies = () => {
         const { results } = await fetchMovieByQuery(searchValue);
         if (results.length === 0) {
           setIsEmpty(true);
-        } else {
-          setIsEmpty(false);
         }
         setMoviesByQuery(results);
       } catch (error) {
@@ -39,7 +45,9 @@ const Movies = () => {
     evt.preventDefault();
 
     if (movieValue === '') {
-      return setSearchParams({});
+      Notiflix.Notify.failure('Something went wrong.');
+      setSearchParams({});
+      return;
     }
 
     setSearchParams({ searchQuery: movieValue });
@@ -50,7 +58,6 @@ const Movies = () => {
     }
 
     setMovieValue('');
-    setMoviesByQuery([]);
   };
 
   const handleSearchValueChange = evt => {
@@ -59,8 +66,8 @@ const Movies = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input
+      <StyledForm onSubmit={handleSubmit}>
+        <StyledInput
           type="text"
           name="searchQuery"
           value={movieValue}
@@ -69,14 +76,18 @@ const Movies = () => {
           placeholder="Search images and photos"
           onChange={handleSearchValueChange}
         />
-        <button type="submit"></button>
-      </form>
+        <StyledBtn type="submit">
+          <CgSearch />
+        </StyledBtn>
+      </StyledForm>
 
       {moviesByQuery && <MovieList movies={moviesByQuery} />}
-      {loading && <div> {Loader()} </div>}
+      {loading && <Box> {Loader()} </Box>}
 
-      {error && <h2>Something went wrong. Try again.</h2>}
-      {isEmpty && <h1> Sorry. There are no movies by your query</h1>}
+      {error && <StyledTitle>Something went wrong. Try again.</StyledTitle>}
+      {isEmpty && (
+        <StyledTitle> Sorry. There are no movies by your query</StyledTitle>
+      )}
     </div>
   );
 };
