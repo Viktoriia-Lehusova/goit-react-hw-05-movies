@@ -1,48 +1,51 @@
+import { fetchMovieCast } from '../../fetchAPI';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchMovieReviews } from '../fetchAPI';
-import { Loader } from '../components/Loader';
+import { Loader } from '../Loader/Loader';
 
-const Reviews = () => {
+const Cast = () => {
   const { movieId } = useParams();
-  const [reviews, setReviews] = useState([]);
+  const [cast, setCast] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [error, setError] = useState(null);
 
+  const img_url = 'https://image.tmdb.org/t/p/w500';
+
   useEffect(() => {
-    const movieReviews = async () => {
+    const movieCast = async () => {
       setLoading(true);
       try {
-        const { results } = await fetchMovieReviews(movieId);
-        if (results.length === 0) {
+        const { cast } = await fetchMovieCast(movieId);
+        if (cast.length === 0) {
           setIsEmpty(true);
         }
-        setReviews(results);
+        setCast(cast);
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-    movieReviews();
+    movieCast();
   }, [movieId]);
 
   return (
     <div>
       {loading && <div> {Loader()} </div>}
       <ul>
-        {reviews.map(({ id, author, content }) => (
+        {cast.map(({ id, profile_path, name, character }) => (
           <li key={id}>
-            {author}
-            <p>{content}</p>
+            <img src={img_url + profile_path} alt="" />
+            <h2>{name}</h2>
+            <p>{character}</p>
           </li>
         ))}
       </ul>
       {error && <h2>Something went wrong. Try again.</h2>}
-      {isEmpty && <h1> There are no reviews.</h1>}
+      {isEmpty && <h1> Sorry, we dont have this information.</h1>}
     </div>
   );
 };
 
-export default Reviews;
+export default Cast;

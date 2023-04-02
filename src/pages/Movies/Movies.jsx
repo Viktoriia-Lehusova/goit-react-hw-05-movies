@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { fetchMovieByQuery } from '../fetchAPI';
-import MovieList from '../components/MovieList';
-import { Loader } from '../components/Loader';
+import { fetchMovieByQuery } from '../../fetchAPI';
+import MovieList from '../../components/MovieList/MovieList';
+import { Loader } from '../../components/Loader/Loader';
 import Notiflix from 'notiflix';
 
 const Movies = () => {

@@ -1,6 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
-import { Loader } from '../components/Loader';
+import { Loader } from '../Loader/Loader';
 
 const MovieItem = ({ movie, genres }) => {
   const img_url = 'https://image.tmdb.org/t/p/w500';

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { fetchMovieDetails } from '../fetchAPI';
-import MovieItem from '../components/MovieItem';
-import { Loader } from '../components/Loader';
+import { fetchMovieDetails } from '../../fetchAPI';
+import MovieItem from '../../components/MovieItem/MovieItem';
+import { Loader } from '../../components/Loader/Loader';
 import { useRef } from 'react';
 
 const MovieDetails = () => {
